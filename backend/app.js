@@ -1,11 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const Post = require('./models/post');
 
 const app = express();
-
-// CGxnLoVboBssdyeH
+mongoose
+  .connect(
+    'mongodb+srv://nathalie:helloworld@firstcluster-fxmgj.mongodb.net/test?retryWrites=true',
+    { useNewUrlParser: true }
+  )
+  .then(() => {
+    console.log('Connected to database!');
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
