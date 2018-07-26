@@ -3,11 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const Post = require('./models/post');
-
+//node-angular: name of the database
 const app = express();
 mongoose
   .connect(
-    'mongodb+srv://nathalie:helloworld@firstcluster-fxmgj.mongodb.net/test?retryWrites=true',
+    'mongodb+srv://nathalie:helloworld@firstcluster-fxmgj.mongodb.net/node-angular?retryWrites=true',
     { useNewUrlParser: true }
   )
   .then(() => {
@@ -38,6 +38,8 @@ app.post('/api/posts', (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
+  //save this content to MongoDB
+  post.save();
   console.log(post);
   res.status(201).json({
     message: 'Message Posted Successfully'
@@ -45,21 +47,12 @@ app.post('/api/posts', (req, res, next) => {
 });
 
 app.get('/api/posts', (req, res, next) => {
-  const posts = [
-    {
-      id: 'DFJkdfkjaskjlksdfo',
-      title: 'First server-side post',
-      content: 'This is coming from the server'
-    },
-    {
-      id: 'KJihudsJHJ',
-      title: 'Second server-side post',
-      content: 'This is coming from the server'
-    }
-  ];
-  res.status(200).json({
-    message: 'Posts fetched successfully',
-    posts: posts
+  Post.find().then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: 'Posts fetched successfully',
+      posts: documents
+    });
   });
 });
 
