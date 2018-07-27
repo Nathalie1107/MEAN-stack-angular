@@ -39,10 +39,12 @@ app.post('/api/posts', (req, res, next) => {
     content: req.body.content
   });
   //save this content to MongoDB
-  post.save();
-  // console.log(post);
-  res.status(201).json({
-    message: 'Message Posted Successfully'
+  post.save().then(result => {
+    console.log(result);
+    res.status(201).json({
+      message: 'Message Posted Successfully',
+      postId: result._id
+    });
   });
 });
 
